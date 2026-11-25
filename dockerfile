@@ -1,14 +1,30 @@
 
+# Build Tailwind CSS
+FROM node:22-alpine AS assets
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm ci
+RUN npm run build
+
+# PHP application
 FROM php:8.3-apache
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf
-
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost *:10000>/' /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite
 
 WORKDIR /var/www/html
 
 COPY . .
 
-EXPOSE 10000
+# Copy generated Tailwind CSS
+COPY --from=assets /app/src/output.css ./src/output.css
+
+ENV PORT=80
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
