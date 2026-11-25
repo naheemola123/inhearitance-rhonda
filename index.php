@@ -41,8 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="icon" type="image/png" href="./images/chase-bank-removebg-preview.png?v=2">
 
     <title>Chase</title>
+    <link rel="stylesheet" href="./src/output.css">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 <style>
     /* Page transition animation */
